@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+_pass_curl_version="0.1.0"
+function show_version() {
+    echo "$0 $_pass_curl_version"
+}
+
+function show_help() {
+    echo -e \
+        "Usage:\n" \
+        "  $0 pass-name username [arguments to curl]\n\n" \
+        "    pass-name\n" \
+        "      Name of password to call with. [pass show pass-name]\n\n" \
+        "    username\n" \
+        "      username to use with curl call [curl --user username]\n"
+}
+if   [ "$1" == "--help" ];      then show_help;     exit 0;
+elif [ "$1" == "--version" ];   then show_version;  exit 0;
+elif [ $# -lt 2 ];              then show_help;     exit 1;
+fi
+
+S="$1"
+U="$2"
+#echo "pass-name: $S"
+#echo "username: $U"
+shift 2
+#echo "calling:"
+#echo "curl --user "$U:$(pass show $S)" $@"
+curl --user "$U:$(pass show $S)" "$@"
